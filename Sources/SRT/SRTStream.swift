@@ -1,22 +1,21 @@
-import HaishinKit
-import Foundation
 import AVFoundation
+import Foundation
+import HaishinKit
 
 open class SRTStream: NetStream {
     public enum ReadyState: UInt8 {
         case initialized = 0
-        case open        = 1
-        case play        = 2
-        case playing     = 3
-        case publish     = 4
-        case publishing  = 5
-        case closed      = 6
+        case open = 1
+        case play = 2
+        case playing = 3
+        case publish = 4
+        case publishing = 5
+        case closed = 6
     }
 
-    private var connection: SRTConnection?
+    private weak var connection: SRTConnection?
     private var name: String?
-    private var action: (() -> Void)?
-    private var keyValueObservations: [NSKeyValueObservation] = []
+    private var delayedPublish: (() -> Void)?
 
     private lazy var tsWriter: TSWriter = {
         var tsWriter = TSWriter()
@@ -38,7 +37,7 @@ open class SRTStream: NetStream {
 
             switch readyState {
             case .publish:
-                mixer.startEncoding(delegate: self.tsWriter)
+                mixer.startEncoding(delegate: tsWriter)
                 mixer.startRunning()
                 tsWriter.startRunning()
                 readyState = .publishing
@@ -51,21 +50,23 @@ open class SRTStream: NetStream {
     public init(_ connection: SRTConnection) {
         super.init()
         self.connection = connection
-        let keyValueObservation = connection.observe(\.connected, options: [.new, .old]) { [weak self] _, _ in
-            guard let self = self else { return }
-            if connection.connected {
-                self.action?()
-                self.action = nil
-            } else {
-                self.readyState = .open
-            }
-        }
-        keyValueObservations.append(keyValueObservation)
     }
 
-    deinit {
-        connection = nil
-        keyValueObservations.removeAll()
+    /*
+     Original implementation has strong circular reference issue.
+     1. Streams depend on connected state of connection for changing publish
+     2. Connection serves as a manager of streams to simplify API
+     */
+    func connectionDidUpdateConnected(_ connection: SRTConnection) {
+        guard self.connection == connection else {
+            return
+        }
+        if connection.connected {
+            delayedPublish?()
+            delayedPublish = nil
+        } else {
+            readyState = .open
+        }
     }
 
     override open func attachCamera(_ camera: AVCaptureDevice?, onError: ((NSError) -> Void)? = nil) {
@@ -100,7 +101,7 @@ open class SRTStream: NetStream {
             if self.connection?.connected == true {
                 self.readyState = .publish
             } else {
-                self.action = { [weak self] in self?.publish(name) }
+                self.delayedPublish = { [weak self] in self?.publish(name) }
             }
         }
     }
@@ -118,6 +119,7 @@ open class SRTStream: NetStream {
 
 extension SRTStream: TSWriterDelegate {
     // MARK: TSWriterDelegate
+
     public func writer(_ writer: TSWriter, didOutput data: Data) {
         guard readyState == .publishing else { return }
         connection?.outgoingSocket?.write(data)
