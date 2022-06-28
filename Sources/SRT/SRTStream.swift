@@ -50,6 +50,7 @@ open class SRTStream: NetStream {
     public init(_ connection: SRTConnection) {
         super.init()
         self.connection = connection
+        connection.attachStream(self)
     }
 
     /*
