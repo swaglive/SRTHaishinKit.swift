@@ -29,7 +29,7 @@ Pod::Spec.new do |spec|
   spec.library = 'c++'
   spec.preserve_paths = [
     'Platforms/iOS/**/*.modulemap',
-    'Vendor/SRT/**/*.sh'
+    'Vendor/SRT/**/libsrt-iOS.a'
   ]  
 
   spec.pod_target_xcconfig = {
@@ -38,20 +38,4 @@ Pod::Spec.new do |spec|
     'OTHER_LDFLAGS' => '-lsrt-iOS'
   }  
 
-  spec.script_phases = {
-    :name => 'Build SRT',
-    :execution_position => :before_compile,
-    :script => <<-CMD
-    echo 'Build srt into ${PODS_TARGET_SRCROOT}/Vendor/SRT'
-    pushd ${PODS_TARGET_SRCROOT}/Vendor/SRT
-    if [ -e libsrt-iOS.a ]
-    then
-        exit 0
-    fi
-
-    cat ./build-srt-iOS.sh
-    ./build-srt-iOS.sh
-    popd
-  CMD
-  }
 end
