@@ -26,7 +26,6 @@ open class SRTStream: NetStream {
     public private(set) var readyState: ReadyState = .initialized {
         didSet {
             guard oldValue != readyState else { return }
-
             switch oldValue {
             case .publishing:
                 tsWriter.stopRunning()
@@ -44,6 +43,11 @@ open class SRTStream: NetStream {
             default:
                 break
             }
+            NotificationCenter.default.post(
+                name: SRTNotificationNames.streamStatusNotification,
+                object: self,
+                userInfo: [SRTNotificationProperties.status: readyState]
+            )
         }
     }
 
