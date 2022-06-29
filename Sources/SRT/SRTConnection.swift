@@ -1,6 +1,26 @@
 import Foundation
 
 open class SRTConnection: NSObject {
+    public enum SocketStatus: UInt32 {
+        case initialized, opened, listening, connecting, connected, broken, closing, closed, nonexist
+
+        public init?(srtStatus: SRT_SOCKSTATUS) {
+            switch srtStatus {
+            case SRTS_INIT: self = .initialized
+            case SRTS_OPENED: self = .opened
+            case SRTS_BROKEN: self = .broken
+            case SRTS_CONNECTING: self = .connecting
+            case SRTS_CONNECTED: self = .connected
+            case SRTS_CLOSING: self = .closing
+            case SRTS_CLOSED: self = .closed
+            case SRTS_NONEXIST: self = .nonexist
+            case SRTS_LISTENING: self = .listening
+            default:
+                return nil
+            }
+        }
+    }
+
     /// SRT Library version
     public static let version: String = SRT_VERSION_STRING
 
@@ -16,15 +36,11 @@ open class SRTConnection: NSObject {
     var outgoingSocket: SRTOutgoingSocket?
     private var streams: [SRTStream] = []
 
-    override public init() {
-        super.init()
-    }
-
     deinit {
         streams.removeAll()
     }
 
-    public func connect(_ uri: URL?) {
+    public func connect(_ uri: URL?) throws {
         guard let uri = uri, let scheme = uri.scheme, let host = uri.host, let port = uri.port, scheme == "srt" else {
             return
         }
@@ -33,9 +49,10 @@ open class SRTConnection: NSObject {
         let options = SRTSocketOption.from(uri: uri)
         let addr = sockaddr_in(host, port: UInt16(port))
 
-        outgoingSocket = SRTOutgoingSocket()
-        outgoingSocket?.delegate = self
-        ((try? outgoingSocket?.connect(addr, options: options)) as ()??)
+        let socket = SRTOutgoingSocket()
+        socket.delegate = self
+        try socket.connect(addr, options: options)
+        outgoingSocket = socket
     }
 
     public func close() {
@@ -70,6 +87,13 @@ extension SRTConnection: SRTSocketDelegate {
     func status(_ socket: SRTSocket, status: SRT_SOCKSTATUS) {
         guard let outgoingSocket = outgoingSocket else {
             return
+        }
+        if let socketStatus = SocketStatus(srtStatus: status) {
+            NotificationCenter.default.post(
+                name: SRTNotificationNames.connectionStatusNotification,
+                object: self,
+                userInfo: [SRTNotificationProperties.status: socketStatus]
+            )
         }
         connected = outgoingSocket.status == SRTS_CONNECTED
     }
