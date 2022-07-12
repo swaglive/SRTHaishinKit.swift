@@ -20,7 +20,10 @@ open class SRTConnection: NSObject {
             }
         }
     }
-
+    
+    public var traceStats: SRT_TRACEBSTATS? {
+        return outgoingSocket?.getStats()
+    }
     /// SRT Library version
     public static let version: String = SRT_VERSION_STRING
 
@@ -34,6 +37,7 @@ open class SRTConnection: NSObject {
     }
 
     var outgoingSocket: SRTOutgoingSocket?
+
     private var streams: [SRTStream] = []
 
     deinit {

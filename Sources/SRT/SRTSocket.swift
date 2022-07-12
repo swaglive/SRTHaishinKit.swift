@@ -16,6 +16,7 @@ class SRTSocket {
             options[.tsbdmode] = true
         }
     }
+
     weak var delegate: SRTSocketDelegate?
     private(set) var isRunning: Atomic<Bool> = .init(false)
 
@@ -60,7 +61,6 @@ class SRTSocket {
     }
 
     func connect(_ addr: sockaddr_in, options: [SRTSocketOption: Any] = SRTSocket.defaultOptions) throws {
-
         guard socket == SRT_INVALID_SOCK else {
             return
         }
@@ -68,10 +68,10 @@ class SRTSocket {
         // prepare socket
         socket = srt_socket(AF_INET, SOCK_DGRAM, 0)
         if socket == SRT_ERROR {
-                let error_message = String(cString: srt_getlasterror_str())
+            let error_message = String(cString: srt_getlasterror_str())
 
-                logger.error(error_message)
-                throw SRTError.illegalState(message: error_message)
+            logger.error(error_message)
+            throw SRTError.illegalState(message: error_message)
         }
 
         self.options = options
@@ -87,7 +87,6 @@ class SRTSocket {
         }
 
         if stat == SRT_ERROR {
-
             let error_message = String(cString: srt_getlasterror_str())
 
             logger.error(error_message)
@@ -118,6 +117,7 @@ class SRTSocket {
 
 extension SRTSocket: Running {
     // MARK: Running
+
     func startRunning() {
         lockQueue.async {
             self.isRunning.mutate { $0 = true }
@@ -130,5 +130,18 @@ extension SRTSocket: Running {
 
     func stopRunning() {
         isRunning.mutate { $0 = false }
+    }
+
+    func getStats() -> SRT_TRACEBSTATS? {
+        guard socket != SRT_INVALID_SOCK else { return nil }
+        var stats = SRT_TRACEBSTATS()
+        let status = withUnsafeMutablePointer(to: &stats) { ptr in
+            srt_bstats(socket, ptr, 0)
+        }
+        guard status == 0 else {
+            logger.error("Cannot retrieve performance stats, retVal: \(status)")
+            return nil
+        }
+        return stats
     }
 }
