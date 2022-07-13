@@ -114,6 +114,8 @@
 		BCD1DC292606240200A1C593 /* Logboard.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCD1DC1F260623E200A1C593 /* Logboard.xcframework */; };
 		BCD1DC322606255000A1C593 /* HaishinKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCD1DC1E260623E200A1C593 /* HaishinKit.xcframework */; };
 		BCD1DC342606255000A1C593 /* Logboard.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCD1DC1F260623E200A1C593 /* Logboard.xcframework */; };
+		E06772AF287D82C3002BFFD5 /* FrameRateCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E06772AE287D82C3002BFFD5 /* FrameRateCounter.swift */; };
+		E06772B0287D82C3002BFFD5 /* FrameRateCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E06772AE287D82C3002BFFD5 /* FrameRateCounter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -221,6 +223,7 @@
 		BCC1A7392656BF9200661156 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = Vendor/SRT/OpenSSL/iphoneos/lib/libcrypto.a; sourceTree = "<group>"; };
 		BCD1DC1E260623E200A1C593 /* HaishinKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = HaishinKit.xcframework; path = Carthage/Build/HaishinKit.xcframework; sourceTree = "<group>"; };
 		BCD1DC1F260623E200A1C593 /* Logboard.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Logboard.xcframework; path = Carthage/Build/Logboard.xcframework; sourceTree = "<group>"; };
+		E06772AE287D82C3002BFFD5 /* FrameRateCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameRateCounter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -390,7 +393,6 @@
 		296FB20621A6BD1F00CB4770 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BC3296DF2737C33F00DCACD7 /* libcryptex.tbd */,
 				BCC1A7392656BF9200661156 /* libcrypto.a */,
 				BCD1DC1E260623E200A1C593 /* HaishinKit.xcframework */,
 				BCD1DC1F260623E200A1C593 /* Logboard.xcframework */,
@@ -474,6 +476,7 @@
 			isa = PBXGroup;
 			children = (
 				296FB28321A70D8100CB4770 /* Constants.swift */,
+				E06772AE287D82C3002BFFD5 /* FrameRateCounter.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -775,6 +778,7 @@
 				296FB2A221A85A8400CB4770 /* SRTOutgoingSocket.swift in Sources */,
 				296FB28621A70D9600CB4770 /* SRTError.swift in Sources */,
 				296FB23721A6D58900CB4770 /* SRTStream.swift in Sources */,
+				E06772AF287D82C3002BFFD5 /* FrameRateCounter.swift in Sources */,
 				29D0939921A998AF003E6E1F /* Data+Extension.swift in Sources */,
 				296FB29F21A85A7000CB4770 /* SRTIncomingSocket.swift in Sources */,
 				296FB22821A6BEE700CB4770 /* SRTSocket.swift in Sources */,
@@ -791,6 +795,7 @@
 				296FB28B21A800CF00CB4770 /* SRTConnection.swift in Sources */,
 				296FB2A321A85A8400CB4770 /* SRTOutgoingSocket.swift in Sources */,
 				296FB28821A70E1500CB4770 /* Constants.swift in Sources */,
+				E06772B0287D82C3002BFFD5 /* FrameRateCounter.swift in Sources */,
 				29D0939A21A998AF003E6E1F /* Data+Extension.swift in Sources */,
 				296FB28721A70D9600CB4770 /* SRTError.swift in Sources */,
 				296FB22921A6BEE700CB4770 /* SRTSocket.swift in Sources */,

@@ -23,6 +23,11 @@ open class SRTStream: NetStream {
         return tsWriter
     }()
 
+    private let fpsCounter = FrameRateCounter()
+    public var fps: Int {
+        fpsCounter.fps
+    }
+
     public private(set) var readyState: ReadyState = .initialized {
         didSet {
             guard oldValue != readyState else { return }
@@ -36,7 +41,7 @@ open class SRTStream: NetStream {
 
             switch readyState {
             case .publish:
-                mixer.startEncoding(delegate: tsWriter)
+                mixer.startEncoding(delegate: self)
                 mixer.startRunning()
                 tsWriter.startRunning()
                 readyState = .publishing
@@ -128,5 +133,26 @@ extension SRTStream: TSWriterDelegate {
     public func writer(_ writer: TSWriter, didOutput data: Data) {
         guard readyState == .publishing else { return }
         connection?.outgoingSocket?.write(data)
+    }
+}
+
+extension SRTStream: AudioCodecDelegate {
+    public func audioCodec(_ codec: HaishinKit.AudioCodec, didSet formatDescription: CMFormatDescription?) {
+        tsWriter.audioCodec(codec, didSet: formatDescription)
+    }
+
+    public func audioCodec(_ codec: HaishinKit.AudioCodec, didOutput sample: UnsafeMutableAudioBufferListPointer, presentationTimeStamp: CMTime) {
+        tsWriter.audioCodec(codec, didOutput: sample, presentationTimeStamp: presentationTimeStamp)
+    }
+}
+
+extension SRTStream: VideoCodecDelegate {
+    public func videoCodec(_ codec: VideoCodec, didSet formatDescription: CMFormatDescription?) {
+        tsWriter.videoCodec(codec, didSet: formatDescription)
+    }
+
+    public func videoCodec(_ codec: VideoCodec, didOutput sampleBuffer: CMSampleBuffer) {
+        tsWriter.videoCodec(codec, didOutput: sampleBuffer)
+        fpsCounter.accumulate()
     }
 }

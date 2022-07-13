@@ -20,10 +20,15 @@ open class SRTConnection: NSObject {
             }
         }
     }
-    
-    public var traceStats: SRT_TRACEBSTATS? {
-        return outgoingSocket?.getStats()
+
+    public var bandwidth: Int? {
+        guard let stats = outgoingSocket?.getStats() else {
+            return nil
+        }
+        //The unit seems to be kbps in reality
+        return Int(stats.mbpsBandwidth * 1000)
     }
+
     /// SRT Library version
     public static let version: String = SRT_VERSION_STRING
 
