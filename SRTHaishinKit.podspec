@@ -25,7 +25,7 @@ Pod::Spec.new do |spec|
   ]
   spec.dependency 'Logboard', '~> 2.2.2'
   spec.dependency 'HaishinKit'
-  spec.dependency 'OpenSSL-Universal', '~> 1.1.1501'
+  spec.dependency 'OpenSSL-Universal', '= 1.1.1501'
   spec.library = 'c++'
   spec.preserve_paths = [
     'Platforms/iOS/**/*.modulemap',
