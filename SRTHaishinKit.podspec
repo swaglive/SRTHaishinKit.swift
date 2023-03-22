@@ -19,13 +19,14 @@ Pod::Spec.new do |s|
   s.ios.source_files = "Platforms/iOS/*.{h,swift}"
 
   s.source_files = ['Sources/**/*.{swift,h}', 'Vendor/SRT/Includes/*.h']
-  s.public_header_files = ['Vendor/SRT/Includes/*.h']
+  s.public_header_files = 'Platforms/iOS/SRTHaishinKit.h'
+  s.private_header_files = ['Vendor/SRT/Includes/*.h']
   s.vendored_frameworks = 'Vendor/SRT/libsrt.xcframework'
-
+  s.library = 'c++'
   s.cocoapods_version = ">= 1.9.0"
 
   s.xcconfig = {
-    'OTHER_LDFLAGS' => '-framework libsrt'
+    'SWIFT_INCLUDE_PATHS' => '"${PODS_TARGET_SRCROOT}/Platforms/iOS/Supporting Files"',
   }
 
   s.dependency 'HaishinKit', '~> 1.4.2'
