@@ -41,7 +41,7 @@ open class SRTStream: NetStream {
 
             switch readyState {
             case .publish:
-                mixer.startEncoding(tsWriter)
+                mixer.startEncoding(self)
                 mixer.startRunning()
                 tsWriter.startRunning()
                 readyState = .publishing
@@ -147,6 +147,10 @@ extension SRTStream: AudioCodecDelegate {
 }
 
 extension SRTStream: VideoCodecDelegate {
+    public func videoCodec(_ codec: HaishinKit.VideoCodec, errorOccurred error: HaishinKit.VideoCodec.Error) {
+        tsWriter.videoCodec(codec, errorOccurred: error)
+    }
+    
     public func videoCodec(_ codec: VideoCodec, didSet formatDescription: CMFormatDescription?) {
         tsWriter.videoCodec(codec, didSet: formatDescription)
     }
