@@ -1,6 +1,6 @@
 import Logboard
 
-let logger = Logboard.with("com.haishinkit.SRTHaishinKit")
+let logger = LBLogger.with("com.haishinkit.SRTHaishinKit")
 
 public struct SRTNotificationNames {
     public static let connectionStatusNotification = Notification.Name(rawValue: "com.haishinkit.SRTHaishinKit.SRTConnectionStatusNotification")

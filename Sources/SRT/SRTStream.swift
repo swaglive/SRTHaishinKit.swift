@@ -41,7 +41,7 @@ open class SRTStream: NetStream {
 
             switch readyState {
             case .publish:
-                mixer.startEncoding(delegate: self)
+                mixer.startEncoding(tsWriter)
                 mixer.startRunning()
                 tsWriter.startRunning()
                 readyState = .publishing
@@ -79,22 +79,22 @@ open class SRTStream: NetStream {
         }
     }
 
-    override open func attachCamera(_ camera: AVCaptureDevice?, onError: ((NSError) -> Void)? = nil) {
-        if camera == nil {
+    open override func attachCamera(_ device: AVCaptureDevice?, onError: ((Error) -> Void)? = nil) {
+        if device == nil {
             tsWriter.expectedMedias.remove(.video)
         } else {
             tsWriter.expectedMedias.insert(.video)
         }
-        super.attachCamera(camera, onError: onError)
+        super.attachCamera(device, onError: onError)
     }
-
-    override open func attachAudio(_ audio: AVCaptureDevice?, automaticallyConfiguresApplicationAudioSession: Bool = true, onError: ((NSError) -> Void)? = nil) {
-        if audio == nil {
+    
+    open override func attachAudio(_ device: AVCaptureDevice?, automaticallyConfiguresApplicationAudioSession: Bool = false, onError: ((Error) -> Void)? = nil) {
+        if device == nil {
             tsWriter.expectedMedias.remove(.audio)
         } else {
             tsWriter.expectedMedias.insert(.audio)
         }
-        super.attachAudio(audio, automaticallyConfiguresApplicationAudioSession: automaticallyConfiguresApplicationAudioSession, onError: onError)
+        super.attachAudio(device, automaticallyConfiguresApplicationAudioSession: automaticallyConfiguresApplicationAudioSession, onError: onError)
     }
 
     open func publish(_ name: String?) {
