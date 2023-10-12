@@ -22,11 +22,14 @@ open class SRTConnection: NSObject {
     }
 
     public var bandwidth: Int? {
+        senderStats?.dataRate.bitsPerSecond
+    }
+    
+    public var senderStats: SRTSenderStats? {
         guard let stats = outgoingSocket?.getStats() else {
             return nil
         }
-        //The unit seems to be kbps in reality
-        return Int(stats.mbpsBandwidth * 1000)
+        return SRTSenderStats(stats)
     }
 
     /// SRT Library version
@@ -57,7 +60,7 @@ open class SRTConnection: NSObject {
         self.uri = uri
         let options = SRTSocketOption.from(uri: uri)
         let addr = sockaddr_in(host, port: UInt16(port))
-
+        
         let socket = SRTOutgoingSocket()
         socket.delegate = self
         try socket.connect(addr, options: options)
@@ -107,3 +110,4 @@ extension SRTConnection: SRTSocketDelegate {
         connected = outgoingSocket.status == SRTS_CONNECTED
     }
 }
+
