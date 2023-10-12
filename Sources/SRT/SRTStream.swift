@@ -137,24 +137,32 @@ extension SRTStream: TSWriterDelegate {
 }
 
 extension SRTStream: AudioCodecDelegate {
-    public func audioCodec(_ codec: HaishinKit.AudioCodec, didSet formatDescription: CMFormatDescription?) {
-        tsWriter.audioCodec(codec, didSet: formatDescription)
+    public func audioCodec(_ codec: HaishinKit.AudioCodec, didOutput audioFormat: AVAudioFormat) {
+        tsWriter.audioCodec(codec, didOutput: audioFormat)
     }
-
-    public func audioCodec(_ codec: HaishinKit.AudioCodec, didOutput sample: UnsafeMutableAudioBufferListPointer, presentationTimeStamp: CMTime) {
-        tsWriter.audioCodec(codec, didOutput: sample, presentationTimeStamp: presentationTimeStamp)
+    
+    public func audioCodec(_ codec: HaishinKit.AudioCodec, didOutput audioBuffer: AVAudioBuffer, presentationTimeStamp: CMTime) {
+        tsWriter.audioCodec(codec, didOutput: audioBuffer, presentationTimeStamp: presentationTimeStamp)
+    }
+    
+    public func audioCodec(_ codec: HaishinKit.AudioCodec, errorOccurred error: HaishinKit.AudioCodec.Error) {
+        tsWriter.audioCodec(codec, errorOccurred: error)
     }
 }
 
 extension SRTStream: VideoCodecDelegate {
+    public func videoCodec(_ codec: HaishinKit.VideoCodec, didOutput formatDescription: CMFormatDescription?) {
+        tsWriter.videoCodec(codec, didOutput: formatDescription)
+    }
+    
+    public func videoCodecWillDropFame(_ codec: HaishinKit.VideoCodec) -> Bool {
+        tsWriter.videoCodecWillDropFame(codec)
+    }
+    
     public func videoCodec(_ codec: HaishinKit.VideoCodec, errorOccurred error: HaishinKit.VideoCodec.Error) {
         tsWriter.videoCodec(codec, errorOccurred: error)
     }
     
-    public func videoCodec(_ codec: VideoCodec, didSet formatDescription: CMFormatDescription?) {
-        tsWriter.videoCodec(codec, didSet: formatDescription)
-    }
-
     public func videoCodec(_ codec: VideoCodec, didOutput sampleBuffer: CMSampleBuffer) {
         tsWriter.videoCodec(codec, didOutput: sampleBuffer)
         fpsCounter.accumulate()
