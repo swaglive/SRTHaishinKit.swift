@@ -21,12 +21,8 @@ open class SRTConnection: NSObject {
         }
     }
 
-    public var bandwidth: Int? {
-        senderStats?.dataRate.bitsPerSecond
-    }
-    
-    public var senderStats: SRTSenderStats? {
-        guard let stats = outgoingSocket?.getStats() else {
+    public func readSenderStats(clear: Bool) -> SRTSenderStats? {
+        guard let stats = outgoingSocket?.getStats(clear: clear) else {
             return nil
         }
         return SRTSenderStats(stats)

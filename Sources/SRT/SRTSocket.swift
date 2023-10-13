@@ -132,11 +132,11 @@ extension SRTSocket: Running {
         isRunning.mutate { $0 = false }
     }
 
-    func getStats() -> SRT_TRACEBSTATS? {
+    func getStats(clear: Bool) -> SRT_TRACEBSTATS? {
         guard socket != SRT_INVALID_SOCK else { return nil }
         var stats = SRT_TRACEBSTATS()
         let status = withUnsafeMutablePointer(to: &stats) { ptr in
-            srt_bstats(socket, ptr, 1)
+            srt_bstats(socket, ptr, clear ? 1 : 0)
         }
         guard status == 0 else {
             logger.error("Cannot retrieve performance stats, retVal: \(status)")

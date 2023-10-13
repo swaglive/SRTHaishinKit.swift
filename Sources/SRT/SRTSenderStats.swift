@@ -11,7 +11,7 @@ public struct SRTSenderStats {
     init(_ stats: SRT_TRACEBSTATS) {
         dataRate = DataRate(mbps: stats.mbpsSendRate)
         estimatedBandwidth = DataRate(mbps: stats.mbpsBandwidth)
-        bufferLevel = Int(stats.byteSndBuf)
+        bufferLevel = Int(stats.pktSndBuf)
         packetLoss = Int(stats.pktSndLoss)
         packetSent = Int(stats.pktSent)
         packetRetransmitted = Int(stats.pktRetrans)

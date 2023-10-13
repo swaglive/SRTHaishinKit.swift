@@ -8,32 +8,68 @@
 import Foundation
 
 public struct DataRate {
+    public static let zero = DataRate(bitsPerSecond: 0)
+    public static let kbps = DataRate(bitsPerSecond: 1 * Prefix.kilo)
+    public static let mbps = DataRate(bitsPerSecond: 1 * Prefix.mega)
+    public static let gbps = DataRate(bitsPerSecond: 1 * Prefix.giga)
     public let bitsPerSecond: Int
 
+    init(bitsPerSecond: Int) {        
+        self.bitsPerSecond = bitsPerSecond
+    }
+    
     init(kbps: Double) {
-        bitsPerSecond = Int(kbps * Prefix.kilo)
+        bitsPerSecond = Int(kbps * Prefix.fkilo)
     }
 
     init(mbps: Double) {
-        bitsPerSecond = Int(mbps * Prefix.mega)
+        bitsPerSecond = Int(mbps * Prefix.fmega)
     }
 
     init(gbps: Double) {
-        bitsPerSecond = Int(gbps * Prefix.giga)
+        bitsPerSecond = Int(gbps * Prefix.fgiga)
+    }
+}
+
+extension DataRate: Comparable {
+    public static func < (lhs: DataRate, rhs: DataRate) -> Bool {
+        lhs.bitsPerSecond < rhs.bitsPerSecond
+    }
+}
+
+public extension DataRate {
+    static func + (lhs: DataRate, rhs: DataRate) -> DataRate {
+        DataRate(bitsPerSecond: lhs.bitsPerSecond + rhs.bitsPerSecond)
+    }
+    
+    static func - (lhs: DataRate, rhs: DataRate) -> DataRate {
+        DataRate(bitsPerSecond: lhs.bitsPerSecond - rhs.bitsPerSecond)
+    }
+    
+    static func * (lhs: DataRate, rhs: Double) -> DataRate {
+        DataRate(bitsPerSecond: Int(Double(lhs.bitsPerSecond) * rhs))
+    }
+    
+    static func * (lhs: Double, rhs: DataRate) -> DataRate {
+        rhs * lhs
+    }
+    
+    static func / (lhs: DataRate, rhs: Double) -> DataRate {
+        DataRate(bitsPerSecond: Int(Double(lhs.bitsPerSecond) / rhs))
     }
 }
 
 public extension DataRate {
     var kbps: Double {
-        changeToBase(Prefix.kilo)
+        changeToBase(Prefix.fkilo)
     }
 
     var mbps: Double {
-        changeToBase(Prefix.mega)
+        changeToBase(Prefix.fmega)
     }
 
     var gbps: Double {
-        changeToBase(Prefix.giga)
+        changeToBase(Prefix.fgiga)
     }
 }
 
@@ -56,8 +92,11 @@ private extension DataRate {
     }
 
     enum Prefix {
-        static let kilo: Double = 1000
-        static let mega: Double = 1000 * kilo
-        static let giga: Double = 1000 * mega
+        static let kilo: Int = 1000
+        static let mega: Int = 1000 * kilo
+        static let giga: Int = 1000 * mega
+        static let fkilo: Double = 1000
+        static let fmega: Double = 1000 * fkilo
+        static let fgiga: Double = 1000 * fmega
     }
 }
