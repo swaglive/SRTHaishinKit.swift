@@ -23,7 +23,7 @@ Pod::Spec.new do |spec|
     'Platforms/iOS/**/*.h',
     'Vendor/SRT/Includes/*.h'
   ]
-  spec.dependency 'Logboard', '~> 2.3.0'
+  spec.dependency 'Logboard', '~> 2.4.0'
   spec.dependency 'HaishinKit'
   spec.dependency 'OpenSSL-Universal', '= 1.1.1501'
   spec.library = 'c++'
