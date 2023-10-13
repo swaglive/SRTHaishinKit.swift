@@ -14,19 +14,19 @@ public struct DataRate {
     public static let gbps = DataRate(bitsPerSecond: 1 * Prefix.giga)
     public let bitsPerSecond: Int
 
-    init(bitsPerSecond: Int) {        
+    public init(bitsPerSecond: Int) {
         self.bitsPerSecond = bitsPerSecond
     }
     
-    init(kbps: Double) {
+    public init(kbps: Double) {
         bitsPerSecond = Int(kbps * Prefix.fkilo)
     }
 
-    init(mbps: Double) {
+    public init(mbps: Double) {
         bitsPerSecond = Int(mbps * Prefix.fmega)
     }
 
-    init(gbps: Double) {
+    public init(gbps: Double) {
         bitsPerSecond = Int(gbps * Prefix.fgiga)
     }
 }
