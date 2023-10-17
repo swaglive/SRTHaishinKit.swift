@@ -17,7 +17,7 @@ public struct DataRate {
     public init(bitsPerSecond: Int) {
         self.bitsPerSecond = bitsPerSecond
     }
-    
+
     public init(kbps: Double) {
         bitsPerSecond = Int(kbps * Prefix.fkilo)
     }
@@ -41,19 +41,19 @@ public extension DataRate {
     static func + (lhs: DataRate, rhs: DataRate) -> DataRate {
         DataRate(bitsPerSecond: lhs.bitsPerSecond + rhs.bitsPerSecond)
     }
-    
+
     static func - (lhs: DataRate, rhs: DataRate) -> DataRate {
         DataRate(bitsPerSecond: lhs.bitsPerSecond - rhs.bitsPerSecond)
     }
-    
+
     static func * (lhs: DataRate, rhs: Double) -> DataRate {
         DataRate(bitsPerSecond: Int(Double(lhs.bitsPerSecond) * rhs))
     }
-    
+
     static func * (lhs: Double, rhs: DataRate) -> DataRate {
         rhs * lhs
     }
-    
+
     static func / (lhs: DataRate, rhs: Double) -> DataRate {
         DataRate(bitsPerSecond: Int(Double(lhs.bitsPerSecond) / rhs))
     }
