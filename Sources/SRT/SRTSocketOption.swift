@@ -243,23 +243,24 @@ public enum SRTSocketOption: String {
         return result != -1
     }
 
-    func data(_ value: Any) -> Data? {
+    private func data(_ value: Any) -> Data? {
         switch type {
         case .string:
             return String(describing: value).data(using: .utf8)
         case .int:
-            var v: Int32 = 0
-            if let value = value as? Int {
-                v = Int32(value)
+            guard var v: Int32 = NumberOptionParser.shared.toInt32(from: value) else {
+                return nil
             }
             return .init(Data(bytes: &v, count: MemoryLayout.size(ofValue: v)))
         case .int64:
-            guard var v = value as? Int64 else { return nil }
+            guard var v: Int64 = NumberOptionParser.shared.toInt64(from: value) else {
+                return nil
+            }
             return .init(Data(bytes: &v, count: MemoryLayout.size(ofValue: v)))
         case .bool:
             var v: Int32 = 0
-            if let value = value as? Bool {
-                v = value ? 1 : 0
+            if let isTrue = BoolOptionParser.shared.parse(value), isTrue {
+                v = 1
             }
             return .init(Data(bytes: &v, count: MemoryLayout.size(ofValue: v)))
         case .enumeration:
