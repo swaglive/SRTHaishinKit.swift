@@ -12,7 +12,7 @@ public class FrameRateCounter {
     private var frames: Int = 0
     private var timer: Timer!
 
-    init() {
+    public init() {
         let timer = Timer(timeInterval: 1, repeats: true, block: { [weak self] _ in
             self?.updateFps()
         })
