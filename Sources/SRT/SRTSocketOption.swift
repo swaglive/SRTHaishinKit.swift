@@ -38,8 +38,8 @@ public enum SRTSocketOption: String {
     case sndbuf
     case rcvbuf
     case linger
-    case udpsndbuf
-    case udprcvbuf
+    case udpsndbuf = "udp_sndbuf"
+    case udprcvbuf = "udp_rcvbuf"
     case rendezvous
     case sndtimeo
     case rcvtimeo
