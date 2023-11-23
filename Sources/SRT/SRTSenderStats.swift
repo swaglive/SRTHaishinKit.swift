@@ -15,6 +15,8 @@ public struct SRTSenderStats {
         packetLoss = Int(stats.pktSndLoss)
         packetSent = Int(stats.pktSent)
         packetDrop = Int(stats.pktSndDrop)
+        packetRecvACK = Int(stats.pktRecvACK)
+        packetRecvNAK = Int(stats.pktRecvNAK)
         packetRetransmitted = Int(stats.pktRetrans)
         bufferDelayMs = Int(stats.msSndBuf)
     }
@@ -27,4 +29,6 @@ public struct SRTSenderStats {
     public let packetSent: Int
     public let packetDrop: Int
     public let packetRetransmitted: Int
+    public let packetRecvACK: Int
+    public let packetRecvNAK: Int
 }
