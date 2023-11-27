@@ -1,4 +1,5 @@
 import Foundation
+import SRTIncludes
 
 final class SRTOutgoingSocket: SRTSocket {
     static let payloadSize: Int = 1316

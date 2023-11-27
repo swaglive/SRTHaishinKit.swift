@@ -34,6 +34,7 @@ Pod::Spec.new do |spec|
 
   spec.pod_target_xcconfig = {
     'SWIFT_INCLUDE_PATHS' => '"${PODS_TARGET_SRCROOT}/Platforms/iOS/Supporting Files"',
+    'USER_HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}"/Vendor/SRT/Includes',
     'LIBRARY_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}"/Vendor/SRT',
     'OTHER_LDFLAGS' => '-lsrt-iOS'
   }  

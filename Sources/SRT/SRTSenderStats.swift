@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SRTIncludes
 
 public struct SRTSenderStats {
     init(_ stats: SRT_TRACEBSTATS) {
