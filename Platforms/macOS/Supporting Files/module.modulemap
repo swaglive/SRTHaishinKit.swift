@@ -1,4 +1,4 @@
-module SRTHaishinKit [system] {
+module SRTIncludes [system] {
     header "/usr/local/opt/srt/include/srt/srt.h"
     export *
 }

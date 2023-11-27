@@ -1,4 +1,4 @@
-module SRTHaishinKit [system] {
+module SRTIncludes [system] {
     header "../../../Vendor/SRT/Includes/srt.h"
     export *
 }

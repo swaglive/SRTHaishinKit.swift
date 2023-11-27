@@ -1,4 +1,5 @@
 import Foundation
+import SRTIncludes
 
 open class SRTConnection: NSObject {
     public enum SocketStatus: UInt32 {
