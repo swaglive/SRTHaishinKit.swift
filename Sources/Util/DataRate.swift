@@ -76,13 +76,14 @@ public extension DataRate {
 extension DataRate: CustomDebugStringConvertible {
     static let formatter: NumberFormatter = {
         let formatter = NumberFormatter()
-        formatter.maximumFractionDigits = 1
+        formatter.maximumFractionDigits = 0
         formatter.numberStyle = .decimal
         return formatter
     }()
 
     public var debugDescription: String {
-        "\(kbps) kb/s"
+        let rate = DataRate.formatter.string(for: kbps) ?? "-"
+        return "\(rate) kb/s"
     }
 }
 
