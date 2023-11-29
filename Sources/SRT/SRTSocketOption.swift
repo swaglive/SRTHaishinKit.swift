@@ -51,7 +51,7 @@ public enum SRTSocketOption: String {
     case snddata
     case rcvdata
     case sender
-    case tsbdmode
+    case tsbpdmode
     case latency
     case tsbpddelay
     case inputbw
@@ -92,7 +92,7 @@ public enum SRTSocketOption: String {
         case .inputbw: return SRTO_INPUTBW
         case .oheadbw: return SRTO_OHEADBW
         case .latency: return SRTO_LATENCY
-        case .tsbdmode: return SRTO_TSBPDMODE
+        case .tsbpdmode: return SRTO_TSBPDMODE
         case .tsbpddelay: return SRTO_TSBPDDELAY
         case .tlpktdrop: return SRTO_TLPKTDROP
         case .nakreport: return SRTO_NAKREPORT
@@ -129,7 +129,7 @@ public enum SRTSocketOption: String {
 
     var binding: Binding {
         switch self {
-        case .rcvsyn: return .pre
+        case .rcvsyn: return .post
         case .maxbw: return .pre
         case .pbkeylen: return .pre
         case .passphrase: return .pre
@@ -141,7 +141,7 @@ public enum SRTSocketOption: String {
         case .iptos: return .pre
         case .inputbw: return .post
         case .oheadbw: return .post
-        case .tsbdmode: return .pre
+        case .tsbpdmode: return .pre
         case .latency: return .pre
         case .tsbpddelay: return .pre
         case .tlpktdrop: return .pre
@@ -179,7 +179,7 @@ public enum SRTSocketOption: String {
 
     var type: Type {
         switch self {
-        case .tsbdmode: return .bool
+        case .tsbpdmode: return .bool
         case .rcvsyn: return .bool
         case .maxbw: return .int64
         case .pbkeylen: return .int

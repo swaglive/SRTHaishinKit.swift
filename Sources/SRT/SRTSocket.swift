@@ -11,12 +11,7 @@ class SRTSocket {
     static let defaultOptions: [SRTSocketOption: Any] = [:]
 
     var timeout: Int = 0
-    var options: [SRTSocketOption: Any] = [:] {
-        didSet {
-            options[.rcvsyn] = true
-            options[.tsbdmode] = true
-        }
-    }
+    var options: [SRTSocketOption: Any] = [:]
 
     weak var delegate: SRTSocketDelegate?
     private(set) var isRunning: Atomic<Bool> = .init(false)
