@@ -30,3 +30,6 @@ srt iphoneos OS arm64
 
 # lipo
 lipo -output libsrt-iOS.a -create ./build/iOS/x86_64/libsrt.a  ./build/iOS/arm64/libsrt.a
+
+# extract header files
+make
