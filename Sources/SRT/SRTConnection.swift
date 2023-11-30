@@ -29,9 +29,6 @@ open class SRTConnection: NSObject {
         return SRTSenderStats(stats)
     }
 
-    /// SRT Library version
-    public static let version: String = SRT_VERSION_STRING
-
     /// The URI passed to the SRTConnection.connect() method.
     public private(set) var uri: URL?
     /// This instance connect to server(true) or not(false)

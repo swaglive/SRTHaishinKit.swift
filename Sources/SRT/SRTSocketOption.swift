@@ -53,7 +53,6 @@ public enum SRTSocketOption: String {
     case sender
     case tsbpdmode
     case latency
-    case tsbpddelay
     case inputbw
     case oheadbw
     case passphrase
@@ -93,7 +92,6 @@ public enum SRTSocketOption: String {
         case .oheadbw: return SRTO_OHEADBW
         case .latency: return SRTO_LATENCY
         case .tsbpdmode: return SRTO_TSBPDMODE
-        case .tsbpddelay: return SRTO_TSBPDDELAY
         case .tlpktdrop: return SRTO_TLPKTDROP
         case .nakreport: return SRTO_NAKREPORT
         case .conntimeo: return SRTO_CONNTIMEO
@@ -143,7 +141,6 @@ public enum SRTSocketOption: String {
         case .oheadbw: return .post
         case .tsbpdmode: return .pre
         case .latency: return .pre
-        case .tsbpddelay: return .pre
         case .tlpktdrop: return .pre
         case .nakreport: return .pre
         case .conntimeo: return .pre
@@ -193,7 +190,6 @@ public enum SRTSocketOption: String {
         case .inputbw: return .int64
         case .oheadbw: return .int
         case .latency: return .int
-        case .tsbpddelay: return .int
         case .tlpktdrop: return .bool
         case .nakreport: return .bool
         case .conntimeo: return .int
